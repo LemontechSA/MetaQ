@@ -1,0 +1,39 @@
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+builds:
+  - env:
+      - CGO_ENABLED=0
+    main: ./cmd/metaq/main.go
+    binary: metaq
+    goos:
+      - linux
+      - darwin
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+checksum:
+  name_template: "checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+brews:
+  - name: metaq
+    tap:
+      owner: LemontechSA
+      name: homebrew-metaq
+    commit_author:
+      name: xZhad
+      email: isarpi@lemontech.com
+    homepage: "https://github.com/LemontechSA/metaq"
+    description: "metaq propagates the same query on multiple databases on the same engine"
