@@ -91,7 +91,11 @@ func parseArr(name string, rows *sql.Rows) (keys []string, result [][]string) {
 		rows.Scan(cols...)
 		res := []string{name}
 		for i := range keys {
-			res = append(res, string(cols[i].([]byte)))
+			if cols[i] == nil {
+				res = append(res, "<nil>")
+			} else {
+				res = append(res, string(cols[i].([]byte)))
+			}
 		}
 		result = append(result, res)
 	}
